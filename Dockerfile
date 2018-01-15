@@ -16,5 +16,5 @@ COPY treestatus.py /app/treestatus.py
 COPY version.json /app/version.json
 
 USER app
-CMD "/app/treestatus.py"
-ENTRYPOINT "/app/treestatus.py"
+ENTRYPOINT ["/app/treestatus.py"]
+CMD []
