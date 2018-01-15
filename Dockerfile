@@ -6,10 +6,8 @@ FROM alpine:3.6
 
 # dependencies
 RUN apk update; \
-    apk add --no-cache python2; \
-    apk add --no-cache --virtual build-dependencies py-pip; \
-    pip install --no-cache flask; \
-    apk del build-dependencies
+    apk add --no-cache python3; \
+    pip3 install --no-cache flask
 
 RUN addgroup -g 10001 app; \
     adduser -D -u 10001 -G app app; \
