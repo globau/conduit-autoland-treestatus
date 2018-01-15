@@ -1,0 +1,2 @@
+Mock TreeStatus REST API server, which returns the same response for every
+request.
