@@ -16,7 +16,6 @@ RUN addgroup -g 10001 app; \
     mkdir /app
 
 COPY treestatus.py /app/treestatus.py
-COPY version.json /app/version.json
 
 USER app
 CMD "/app/treestatus.py"
