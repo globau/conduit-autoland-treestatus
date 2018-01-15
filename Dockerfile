@@ -9,9 +9,15 @@ RUN apk update; \
     apk add --no-cache python2; \
     apk add --no-cache --virtual build-dependencies py-pip; \
     pip install --no-cache flask; \
-    apk del build-dependencies; \
+    apk del build-dependencies
+
+RUN addgroup -g 10001 app; \
+    adduser -D -u 10001 -G app app; \
     mkdir /app
 
 COPY treestatus.py /app/treestatus.py
 COPY version.json /app/version.json
-ENTRYPOINT ["/app/treestatus.py"]
+
+USER app
+CMD "/app/treestatus.py"
+ENTRYPOINT "/app/treestatus.py"
