@@ -11,16 +11,29 @@ import os
 from flask import Flask, jsonify
 app = Flask('treestatus')
 
+
 # mozilla-services/Dockerflow
+
+
 @app.route('/__heartbeat__')
 @app.route('/__lbheartbeat__')
 def heartbeat():
     return 'ok'
 
+
+@app.route('/__version__')
+def version():
+    with open('version.json') as f:
+        return app.response_class(f.read(), mimetype='application/json')
+
+# treestatus
+
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def status_open(path):
     return jsonify({'status': os.getenv('STATUS', 'open')})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 80)))
