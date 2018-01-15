@@ -7,9 +7,7 @@
 # Mock treestatus server which returns the same response for every request.
 # Set the response via the STATUS environmental variable - default is "open".
 
-import json
 import os
-import sys
 
 from flask import Flask, jsonify
 
@@ -35,15 +33,4 @@ def status_open(path):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] == 'version':
-        # Generate version.json for Dockerflow
-        version = {
-            'commit': os.getenv('CIRCLE_SHA1', None),
-            'version': os.getenv('CIRCLE_SHA1', None),
-            'source': 'https://github.com/globau/conduit-autoland-treestatus',
-            'build': os.getenv('CIRCLE_BUILD_URL', None)
-        }
-        print(json.dumps(version))
-
-    else:
-        app.run(host='0.0.0.0', port=int(os.getenv('PORT', 8000)))
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 8000)))
