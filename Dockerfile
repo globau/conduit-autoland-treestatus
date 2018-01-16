@@ -12,9 +12,10 @@ RUN addgroup -g 10001 app; \
     adduser -D -u 10001 -G app app; \
     mkdir /app
 
+COPY entrypoint.sh /entrypoint.sh
 COPY treestatus.py /app/treestatus.py
 COPY version.json /app/version.json
 
 USER app
-ENTRYPOINT ["/app/treestatus.py"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD []
