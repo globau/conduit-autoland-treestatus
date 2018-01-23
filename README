@@ -1,4 +1,4 @@
 Mock TreeStatus REST API server, which returns the same response for every
 request.
 
-TODO: document env vars.
+Set the environmental variable STATUS to the required response (default "open").
