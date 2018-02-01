@@ -4,13 +4,14 @@
 
 FROM alpine:3.6
 
+RUN addgroup -g 10001 app; \
+    adduser -D -u 10001 -G app -g app app; \
+    mkdir /app; \
+    chown app:app /app
+
 RUN apk update; \
     apk add --no-cache python3; \
     pip3 install --no-cache flask
-
-RUN addgroup -g 10001 app; \
-    adduser -D -u 10001 -G app app; \
-    mkdir /app
 
 COPY entrypoint.sh /entrypoint.sh
 COPY treestatus.py /app/treestatus.py
