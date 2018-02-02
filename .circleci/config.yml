@@ -4,13 +4,19 @@ jobs:
     machine: true
     steps:
       - checkout
+        # create and store version.json for dockerflow
       - run: |
           printf '{"commit":"%s","version":"%s","source":"https://github.com/%s/%s","build":"%s"}\n' \
             "$CIRCLE_SHA1" "$CIRCLE_TAG" "$CIRCLE_PROJECT_USERNAME" "$CIRCLE_PROJECT_REPONAME" "$CIRCLE_BUILD_URL" \
             | tee version.json
       - store_artifacts:
           path: version.json
+        # build image
       - run: |
-          docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-          docker build -t $DOCKER_USER/${DOCKER_IMAGE:-$CIRCLE_PROJECT_REPONAME} .
-          docker push $DOCKER_USER/${DOCKER_IMAGE:-$CIRCLE_PROJECT_REPONAME}
+          docker build -t "${DOCKERHUB_REPO:-$DOCKER_USER/$CIRCLE_PROJECT_REPONAME}" .
+        # upload to dockerhub if $DOCKERHUB_REPO is set
+      - deploy: |
+          if [[ -n "$DOCKERHUB_REPO" ]]; then
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+            docker push "${DOCKERHUB_REPO:-$DOCKER_USER/$CIRCLE_PROJECT_REPONAME}"
+          fi
