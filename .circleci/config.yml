@@ -20,6 +20,6 @@ jobs:
           name: upload to dockerhub
           command: |
             if [[ -n "$DOCKERHUB_REPO" ]]; then
-                docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-                docker push "${DOCKERHUB_REPO:-$DOCKER_USER/$CIRCLE_PROJECT_REPONAME}"
+              docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+              docker push "$DOCKERHUB_REPO"
             fi
