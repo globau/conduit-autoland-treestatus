@@ -15,11 +15,11 @@ jobs:
       - run:
           name: build image
           command: |
-            docker build -t "${DOCKERHUB_REPO:-$DOCKER_USER/$CIRCLE_PROJECT_REPONAME}" .
+            docker build -t "${DOCKERHUB_REPO:-$DOCKER_USER/$CIRCLE_PROJECT_REPONAME}:latest" .
       - deploy:
           name: upload to dockerhub
           command: |
             if [[ -n "$DOCKERHUB_REPO" ]]; then
               docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-              docker push "$DOCKERHUB_REPO"
+              docker push "$DOCKERHUB_REPO:latest"
             fi
