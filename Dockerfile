@@ -11,7 +11,7 @@ RUN addgroup -g 10001 app; \
 
 RUN apk update; \
     apk add --no-cache python3; \
-    pip3 install --no-cache flask
+    pip3 install --no-cache flask gunicorn
 
 COPY entrypoint.sh /entrypoint.sh
 COPY treestatus.py /app/treestatus.py
@@ -19,4 +19,4 @@ COPY version.json /app/version.json
 
 USER app
 ENTRYPOINT ["/entrypoint.sh"]
-CMD []
+CMD ["start"]
