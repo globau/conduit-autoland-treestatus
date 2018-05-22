@@ -5,11 +5,16 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Mock treestatus server which returns the same response for every request.
-# Set the response via the STATUS environmental variable - default is "open".
+# Set the initial response via the STATUS environmental variable - default
+# is "open".
+#
+# If the environmental variable IS_TESTING is set to a true value, the status
+# can be updated by PUTing or POSTing the new status to /
+# eg. curl -X PUT http://treestatus.example.com/closed
 
 import os
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 
 app = Flask('treestatus')
 
@@ -26,9 +31,17 @@ def version():
         return app.response_class(f.read(), mimetype='application/json')
 
 
+@app.route('/<status>', methods=['PUT', 'POST'])
+def set_status(status):
+    if not os.getenv('IS_TESTING', ''):
+        abort(405)
+    os.environ['STATUS'] = status
+    return 'treestatus set to: %s\n' % status
+
+
 @app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def status_open(path):
+@app.route('/<tree>')
+def status_open(tree):
     return jsonify({'status': os.getenv('STATUS', 'open')})
 
 
